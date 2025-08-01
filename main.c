@@ -83,7 +83,7 @@ void copy_col(Col to, Col from)
     to[A] = from[A];
 }
 
-void foo(int x, int y, int width, int height, unsigned char* data, unsigned char *visited, Queue* queue, float new_col[], float* num_cols)
+void process_pixel(int x, int y, int width, int height, unsigned char* data, unsigned char *visited, Queue* queue, float new_col[], float* num_cols)
 {
     if (x < 0 || x >= width || y < 0 || y >= height) {
         return;
@@ -202,10 +202,10 @@ int main(int argc, char* argv[])
                 Col col = get_col(data, width, x, y);
                 float new_col[3] = { 0, 0, 0 };
                 float num_cols = 0;
-                foo(x + 1, y, width, height, data, visited, &queue, new_col, &num_cols);
-                foo(x - 1, y, width, height, data, visited, &queue, new_col, &num_cols);
-                foo(x, y + 1, width, height, data, visited, &queue, new_col, &num_cols);
-                foo(x, y - 1, width, height, data, visited, &queue, new_col, &num_cols);
+                process_pixel(x + 1, y, width, height, data, visited, &queue, new_col, &num_cols);
+                process_pixel(x - 1, y, width, height, data, visited, &queue, new_col, &num_cols);
+                process_pixel(x, y + 1, width, height, data, visited, &queue, new_col, &num_cols);
+                process_pixel(x, y - 1, width, height, data, visited, &queue, new_col, &num_cols);
                 new_col[R] /= num_cols;
                 new_col[G] /= num_cols;
                 new_col[B] /= num_cols;
