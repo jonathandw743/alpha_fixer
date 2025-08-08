@@ -1,4 +1,4 @@
-# alpha_fixer
+# transparency_recolorizer
 
 Recolorizes transparent pixels in textures so that interpolation between opaque and transparent pixels produces the correct result.
 
