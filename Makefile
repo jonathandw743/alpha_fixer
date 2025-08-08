@@ -18,5 +18,7 @@ final: main
 	./main --alpha-threshold 4 --recolorize-transparent textures/in textures/final
 release:
 	gcc -Wall -Wpedantic -O3 -o trc main.c -lm
+release-win:
+	gcc -Wall -Wpedantic -O3 -o trc main.c -lm -static -static-libgcc -lpthread
 clean:
 	rm main
