@@ -16,7 +16,7 @@ char* in_dir = NULL;
 char* out_dir = NULL;
 
 typedef struct {
-    void* arr;
+    int* arr;
     size_t offset;
     size_t length;
     size_t capacity;
@@ -24,9 +24,9 @@ typedef struct {
 
 Queue queue_init()
 {
-    size_t capacity = sizeof(int) * 2 * 1024;
+    size_t capacity = 2 * 1024;
     return (Queue) {
-        .arr = malloc(capacity), .offset = 0, .length = 0, .capacity = capacity
+        .arr = malloc(capacity * sizeof(int)), .offset = 0, .length = 0, .capacity = capacity
     };
 }
 
@@ -39,21 +39,21 @@ char queue_nonempty(Queue* queue) { return queue->offset < queue->length; }
 
 void queue_pop(Queue* queue, int* x, int* y)
 {
-    *x = *(int*)(queue->arr + queue->offset);
-    *y = *(int*)(queue->arr + queue->offset + sizeof(int));
-    queue->offset += sizeof(int) * 2;
+    *x = queue->arr[queue->offset];
+    *y = queue->arr[queue->offset + 1];
+    queue->offset += 2;
 }
 
 void queue_push(Queue* queue, int x, int y)
 {
-    if (queue->length + sizeof(int) * 2 > queue->capacity) {
+    if (queue->length + 2 > queue->capacity) {
         size_t capacity = queue->capacity * 2;
-        queue->arr = realloc(queue->arr, capacity);
+        queue->arr = realloc(queue->arr, capacity * sizeof(int));
         queue->capacity = capacity;
     }
-    *(int*)(queue->arr + queue->length) = x;
-    *(int*)(queue->arr + queue->length + sizeof(int)) = y;
-    queue->length += sizeof(int) * 2;
+    queue->arr[queue->length] = x;
+    queue->arr[queue->length + 1] = y;
+    queue->length += 2;
 }
 
 typedef enum { R,
@@ -65,7 +65,7 @@ typedef unsigned char* Col;
 Col get_col(unsigned char* data, int width, int x, int y)
 {
     return (Col)&data[(y * width + x) * 4];
-};
+}
 
 void col_set_placeholder(Col col)
 {
@@ -90,7 +90,6 @@ void process_pixel(int x, int y, int width, int height, unsigned char* data,
     if (x < 0 || x >= width || y < 0 || y >= height) {
         return;
     }
-    unsigned char temp_col[4];
     if (visited[y * width + x]) {
         Col col = get_col(data, width, x, y);
         new_col[R] += (float)col[R];
@@ -132,7 +131,6 @@ int process_file(const char* in_path, const char* out_path)
                 }
             }
         }
-        size_t offset = 0;
         while (queue_nonempty(&queue)) {
             int x, y;
             queue_pop(&queue, &x, &y);

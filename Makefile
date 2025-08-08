@@ -1,7 +1,7 @@
-.PHONY = all check test assets final clean
+.PHONY = all check test assets final clean release
 all: check test assets final
 main:
-	gcc -o main main.c -lm
+	gcc -Wall -Wpedantic -o main main.c -lm
 # check the RGB values of transparent pixels in the input textures
 check: main
 	./main --alpha-threshold 4 --make-transparent-opaque textures/in textures/check
@@ -16,5 +16,7 @@ assets: main
 # produce the final output, correcting the RGB values of transparent pixels
 final: main
 	./main --alpha-threshold 4 --recolorize-transparent textures/in textures/final
+release:
+	gcc -Wall -Wpedantic -O3 -o trc main.c -lm
 clean:
 	rm main
