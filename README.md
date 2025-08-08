@@ -14,10 +14,10 @@ See `Makefile` and `--help` for instructions.
 
 ![Texture with all the transparent pixels set to opaque (before)](assets/Enhancers_check.png)
 
-### Texture with all the transparent pixels set recolorized and set to opaque (after)
+### Texture with all the transparent pixels recolorized and set to opaque (after)
 
 ![Texture with all the transparent pixels set recolorized and set to opaque (after)](assets/Enhancers_test.png)
 
-### Texture with all the transparent pixels set recolorized and set to transparent (should look the same as the riginal)
+### Texture with all the transparent pixels recolorized and set to transparent (should look the same as the original)
 
 ![Texture with all the transparent pixels set recolorized and set to transparent (should look the same as the riginal)](assets/Enhancers_final.png)
