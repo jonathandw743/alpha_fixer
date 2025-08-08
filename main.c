@@ -183,7 +183,11 @@ int process_dir(const char* in_dir, const char* out_dir)
 {
     printf("processing dir %s -> %s\n", in_dir, out_dir);
     printf("creating dir %s\n", out_dir);
+#ifdef _WIN32
+    mkdir(out_dir);
+#else
     mkdir(out_dir, 0777);
+#endif
     DIR* dir = opendir(in_dir);
     if (dir == NULL) {
         printf("could not opendir %s, skipping\n", in_dir);
